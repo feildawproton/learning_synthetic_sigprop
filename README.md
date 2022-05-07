@@ -1,5 +1,5 @@
 # learning_synthetic_sigprop
-Generating synthetic signal propegation data and learning it
+Generating synthetic signal propegation data
 
 A pretty darn fast implementation of some of the ITM signal propagation equations.  I will use this for transfer learning.
 
