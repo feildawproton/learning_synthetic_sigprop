@@ -3,7 +3,7 @@ Generating synthetic signal propegation data
 
 A pretty darn fast implementation of some of the ITM signal propagation equations.  I will use this for transfer learning.
 
-The come for calcualtions is in calc_losses.cu and the neccessary interface in it are int calc_losses.cuh.
+The loss calcualtions are in calc_losses.cu and the neccessary interface for it are int calc_losses.cuh.
 
 Generate_data.cu is a work in progress and currently has an example of the usage of calc_losses().
 
