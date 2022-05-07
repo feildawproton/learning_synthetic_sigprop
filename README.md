@@ -10,13 +10,13 @@ Generate_data.cu is a work in progress and currently has an example of the usage
 ## To compile and run
 CUDA needed.  I don't have a makefile for this project so run:
 
-nvcc generate_data.cu calc_losses.cu -o generate_data
+$ nvcc generate_data.cu calc_losses.cu -o generate_data
 
 If you want to run and look at performace metrics:
 
-nsys nvprof ./generate_data
+$ nsys nvprof ./generate_data
 
 or
 
-nvprof ./generate_data
+$ nvprof ./generate_data
 
