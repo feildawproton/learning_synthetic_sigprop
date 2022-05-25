@@ -23,3 +23,9 @@ $ nvprof ./generate_data
 ## To compile the python compatible version
 $ nvcc -Xcompiler -fPIC -shared -o cuda_sum.so cuda_sum.cu
 
+## Run python version
+python generate_data.py
+
+data is saved in the generated_data folder.
+
+The demo uses small number of examples to reduce generated data file size.  If not writing out to disk, use this code as an example of how to generate more data for RAM.

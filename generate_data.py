@@ -1,6 +1,8 @@
 import numpy as np
 import ctypes
 from ctypes import *
+import pickle
+import os
 
 def get_calc_losses():
 	dll = ctypes.CDLL("calc_losses_extern.so", mode=ctypes.RTLD_GLOBAL)
@@ -9,8 +11,7 @@ def get_calc_losses():
 	return func
 	
 
-def generate_data():
-	numSamples 	= 10000000
+def generate_data(numSamples):
 	h_0_min	= 0.0			#in meters
 	h_0_max 	= 2000.0		#in meters
 	h_1_min 	= 0.0			#in meters
@@ -56,8 +57,14 @@ def generate_data():
 	
 	
 if __name__ == "__main__":
-	data = generate_data()
-	print(data["Loss"])
+	numSamples = 1000000
+	data = generate_data(numSamples = numSamples)
+	print("calculated %i sampels" % (numSamples))
+	
+	dataset_path = os.path.join("generated_data", "synthetic_data.pkl")
+	pickle.dump(data, open(dataset_path, "wb"))
+	
+	print("calculated data out as %s" % ("synthetic_data.pkl"))
 
 
 	
