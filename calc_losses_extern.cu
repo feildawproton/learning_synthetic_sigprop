@@ -1,4 +1,4 @@
-#include "calc_losses.cuh" 
+//#include "calc_losses.cuh" 
 #include <math.h>
 #include <stdlib.h>
 
@@ -137,6 +137,7 @@ __global__ void calc_losses_kernel(const float* ph_0, const float* ph_1, const f
 //pfreq is the array of frequencies in Hertz (1/s)
 //pLoss is the array used for returning loss values
 //the index for each of these entries is the specific example
+extern "C" {
 void calc_losses(const float *ph_0, const float *ph_1, const float *ph_2, 
 				const float *pd_1, const float *pd_2, const float *pfreq, 
 				const unsigned numSamples, float *pLoss)
@@ -203,3 +204,4 @@ void calc_losses(const float *ph_0, const float *ph_1, const float *ph_2,
 	cudaFree(ph_1_dev);
 	cudaFree(ph_0_dev);
 } 
+}
