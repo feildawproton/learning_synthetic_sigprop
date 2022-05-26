@@ -21,7 +21,7 @@ or
 $ nvprof ./generate_data
 
 ## To compile the python compatible version
-$ nvcc -Xcompiler -fPIC -shared -o cuda_sum.so cuda_sum.cu
+$ nvcc -Xcompiler -fPIC -shared -o calc_losses.so calc_losses_extern.cu
 
 ## Run python version
 python generate_data.py
