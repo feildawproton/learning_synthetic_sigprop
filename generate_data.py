@@ -5,7 +5,7 @@ import pickle
 import os
 
 def get_calc_losses():
-	dll = ctypes.CDLL("calc_losses_extern.so", mode=ctypes.RTLD_GLOBAL)
+	dll = ctypes.CDLL("calc_losses.so", mode=ctypes.RTLD_GLOBAL)
 	func = dll.calc_losses
 	func.argtypes = [POINTER(c_float), POINTER(c_float), POINTER(c_float), POINTER(c_float), POINTER(c_float), POINTER(c_float), c_uint, POINTER(c_float)]
 	return func
