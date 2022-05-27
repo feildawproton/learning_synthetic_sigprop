@@ -126,6 +126,17 @@ __global__ void calc_losses_kernel(const float* ph_0, const float* ph_1, const f
 	}
 } 
 
+__global__ void calc_losses_dummy_kernel(const float* ph_0, const float* ph_1, const float* ph_2, 
+			const float* pd_1, const float* pd_2, const float* pfreq, 
+			const unsigned numSamples, const unsigned numThreads, float* pLoss)
+{
+	unsigned gindx = threadIdx.x + blockDim.x * blockIdx.x;	
+	for(unsigned i = gindx; i < numSamples; i += numThreads)
+	{
+		pLoss[i] = ph_0[i] * ph_1[i] + ph_2[i] * pd_1[i] + pd_2[i] + pfreq[i];
+	}
+} 
+
 //This would be the function to interface with
 //handles the cuda kernel
 //assumes these arrays are on the cpe and creates copies on the gpu
@@ -187,6 +198,75 @@ void calc_losses(const float *ph_0, const float *ph_1, const float *ph_2,
 	//then launch
 	unsigned numThreads = BlocksPerGrid * ThreadsPerBlock;
 	calc_losses_kernel<<<BlocksPerGrid, ThreadsPerBlock>>>(ph_0_dev, ph_1_dev, ph_2_dev, pd_1_dev, pd_2_dev, pfreq_dev, numSamples, numThreads, pLoss_dev);
+	status = cudaGetLastError();
+	
+	//need to let work end before moving on
+	status = cudaDeviceSynchronize();
+	
+	//copy back to host
+	status = cudaMemcpy(pLoss, pLoss_dev, mem_size, cudaMemcpyDeviceToHost); 
+	
+	//don't need to the cuda memory anymore
+	cudaFree(pLoss_dev);
+	cudaFree(pfreq_dev);
+	cudaFree(pd_2_dev);
+	cudaFree(pd_1_dev);
+	cudaFree(ph_2_dev);
+	cudaFree(ph_1_dev);
+	cudaFree(ph_0_dev);
+} 
+}
+
+extern "C" {
+void calc_losses_dummy(const float *ph_0, const float *ph_1, const float *ph_2, 
+				const float *pd_1, const float *pd_2, const float *pfreq, 
+				const unsigned numSamples, float *pLoss)
+{
+	size_t mem_size = numSamples * sizeof(float);
+	//copy to gpu memory
+	float *ph_0_dev, *ph_1_dev, *ph_2_dev, *pd_1_dev, *pd_2_dev, *pfreq_dev;
+	
+	cudaError_t status;
+	status = cudaMalloc((void**)&ph_0_dev, mem_size);
+	status = cudaMemcpy(ph_0_dev, ph_0, mem_size, cudaMemcpyHostToDevice); 
+	
+	status = cudaMalloc((void**)&ph_1_dev, mem_size);
+	status = cudaMemcpy(ph_1_dev, ph_1, mem_size, cudaMemcpyHostToDevice); 
+
+	status = cudaMalloc((void**)&ph_2_dev, mem_size);
+	status = cudaMemcpy(ph_2_dev, ph_2, mem_size, cudaMemcpyHostToDevice); 
+	
+	status = cudaMalloc((void**)&pd_1_dev, mem_size);
+	status = cudaMemcpy(pd_1_dev, pd_1, mem_size, cudaMemcpyHostToDevice); 
+	
+	status = cudaMalloc((void**)&pd_2_dev, mem_size);
+	status = cudaMemcpy(pd_2_dev, pd_2, mem_size, cudaMemcpyHostToDevice); 
+	
+	status = cudaMalloc((void**)&pfreq_dev, mem_size);
+	status = cudaMemcpy(pfreq_dev, pfreq, mem_size, cudaMemcpyHostToDevice); 
+	
+	//device id and properties
+	int deviceID;
+	cudaGetDevice(&deviceID);
+	
+	//gpu memory for results
+	float* pLoss_dev;
+	status = cudaMalloc((void**)&pLoss_dev, mem_size);
+	
+	//get properties to make best use of device
+	cudaDeviceProp props;
+	cudaGetDeviceProperties(&props, deviceID);
+	
+	//threads per block should be some multiple warpsize
+	//or just set it to maxThreadsPerBlock
+	//ThreadsPerBlock = props.maxThreadsPerBlock;
+	unsigned ThreadsPerBlock = props.warpSize * 4;
+	//blocks per grid should be some multiple of the number of streaming multiprocessors
+	unsigned BlocksPerGrid = props.multiProcessorCount * 2;
+	
+	//then launch
+	unsigned numThreads = BlocksPerGrid * ThreadsPerBlock;
+	calc_losses_dummy_kernel<<<BlocksPerGrid, ThreadsPerBlock>>>(ph_0_dev, ph_1_dev, ph_2_dev, pd_1_dev, pd_2_dev, pfreq_dev, numSamples, numThreads, pLoss_dev);
 	status = cudaGetLastError();
 	
 	//need to let work end before moving on
