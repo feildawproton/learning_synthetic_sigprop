@@ -25,5 +25,5 @@ This script generates it's own data in the same way as generate_data.py.  This i
 # Timing
 A sufficiently trained neural network is quite a bit slower that the cuda it implementation.  This is probably because:
 
-	- the cuda itm implementation is fast
-	- the computations don't have no spatial interactios.  This is not a 2d problem; this is many independent equations done in parallel.  So, we cannot take advantage of cnns or fourier transforms in this case.
+- the cuda itm implementation is fast
+- the computations don't have no spatial interactios.  This is not a 2d problem; this is many independent equations done in parallel.  So, we cannot take advantage of cnns or fourier transforms in this case.
