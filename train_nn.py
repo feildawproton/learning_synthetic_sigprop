@@ -7,7 +7,7 @@ import tensorflow as tf
 import ctypes
 from ctypes import *
 
-def define_model(width = 256, drop_ratio = 0.1):
+def define_model(width = 512, drop_ratio = 0.1):
 	#initializer = tf.keras.initializers.RandomNormal(mean = 0.0, stddev = 1.0)
 	in_layer = tf.keras.layers.Input(shape = 6)
 	
@@ -22,10 +22,17 @@ def define_model(width = 256, drop_ratio = 0.1):
 	layer_3 = tf.keras.layers.Dense(width, activation = "relu")(drop_2)
 	drop_3 = tf.keras.layers.Dropout(drop_ratio)(layer_3)
 	
+	
 	layer_4 = tf.keras.layers.Dense(width, activation = "relu")(drop_3)
 	drop_4 = tf.keras.layers.Dropout(drop_ratio)(layer_4)
-
+	'''
+	layer_5 = tf.keras.layers.Dense(width, activation = "relu")(drop_4)
+	drop_5 = tf.keras.layers.Dropout(drop_ratio)(layer_5)
+	'''
+	
+	#output_3 = tf.keras.layers.Dense(1, activation = "relu")(drop_3)
 	output_4 = tf.keras.layers.Dense(1, activation = "relu")(drop_4)
+	#output_5 = tf.keras.layers.Dense(1, activation = "relu")(drop_5)
 
 	return tf.keras.Model(inputs = in_layer, outputs = output_4)
 
@@ -122,7 +129,7 @@ plt.show()
 for i, elem in enumerate(npLoss):
 	print("Predicions: %f, and npLoss: %f" % (predictions[i], elem))
 
-model_name = os.path.join("models", "reference")
+model_name = os.path.join("models", "512w_4d")
 model.save(model_name)
 
 
