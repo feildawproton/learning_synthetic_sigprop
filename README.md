@@ -21,3 +21,9 @@ The demo uses small number of examples to reduce generated data file size.  If n
 $ python train_nn.py
 
 This script generates it's own data in the same way as generate_data.py.  This is done because it is fast and I wanted to use more data than is good to have in a github file.
+
+# Timing
+A sufficiently trained neural network is quite a bit slower that the cuda it implementation.  This is probably because:
+
+	- the cuda itm implementation is fast
+	- the computations don't have no spatial interactios.  This is not a 2d problem; this is many independent equations done in parallel.  So, we cannot take advantage of cnns or fourier transforms in this case.
