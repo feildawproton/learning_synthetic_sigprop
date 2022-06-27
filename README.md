@@ -1,14 +1,12 @@
-# generating synthetic sigprop
-Generating synthetic signal propegation data
+# Generating synthetic sigprop samples
+Generating individual synthetic signal propegation data samples.
 
-A pretty darn fast implementation of some of the ITM signal propagation equations.  I will use this for transfer learning.
+A pretty darn fast implementation of some of the ITM signal propagation equations.
 
-The loss calcualtions are in calc_losses.cu and the neccessary interface for it are int calc_losses.cuh.
-
-Generate_data.cu is a work in progress and currently has an example of the usage of calc_losses().
+Used for training a fully connected NN for single instance inference.
 
 ## To compile the python compatible version for data generation
-$ nvcc -Xcompiler -fPIC -shared -o calc_losses.so calc_losses_extern.cu
+$ nvcc -Xcompiler -fPIC -shared -o calc_losses.so calc_losses.cu
 
 ## Run python version of data generation
 $ python generate_data.py
@@ -20,9 +18,9 @@ The demo uses small number of examples to reduce generated data file size.  If n
 # Train NN
 $ python train_nn.py
 
-This script generates it's own data in the same way as generate_data.py.  This is done because it is fast and I wanted to use more data than is good to have in a github file.
+This script generates it's own data in the same way as generate_samples.py.  This is done because it is fast and I wanted to use more data than is good to have in a github file.
 
-# Timing
+## Timing of individual sample inference
 A sufficiently trained neural network is quite a bit slower that the cuda it implementation.  This is probably because:
 
 - the cuda itm implementation is fast
