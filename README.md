@@ -35,11 +35,7 @@ Time with
 	
 
 
-            no_overlap.png
+no_overlap.png
           
-	  
-	 
-
-
-            tried_overlap.png
+tried_overlap.png
           
