@@ -33,4 +33,13 @@ Time with
 
 	$ nsys profile --stats=true --force-overwrite=true -o some_report python generate_samples.py
 	
-Could not get to work on this computer.
+
+
+            no_overlap.png
+          
+	  
+	 
+
+
+            tried_overlap.png
+          
