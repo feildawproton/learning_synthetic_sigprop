@@ -6,10 +6,12 @@ A pretty darn fast implementation of some of the ITM signal propagation equation
 Used for training a fully connected NN for single instance inference.
 
 ## To compile the python compatible version for data generation
-$ nvcc -Xcompiler -fPIC -shared -o calc_losses.so calc_losses.cu
+
+	$ nvcc -Xcompiler -fPIC -shared -o calc_losses.so calc_losses.cu
 
 ## Run python version of data generation
-$ python generate_data.py
+
+	$ python generate_data.py
 
 data is saved in the generated_data folder.
 
@@ -25,3 +27,10 @@ A sufficiently trained neural network is quite a bit slower that the cuda it imp
 
 - the cuda itm implementation is fast
 - the computations don't have no spatial interactios.  This is not a 2d problem; this is many independent equations done in parallel.  So, we cannot take advantage of cnns or fourier transforms in this case.
+
+## Copy compute overlap in data generation examination
+Time with
+
+	$ nsys profile --stats=true --force-overwrite=true -o some_report python generate_samples.py
+	
+Could not get to work on this computer.

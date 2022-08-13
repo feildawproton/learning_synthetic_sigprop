@@ -57,7 +57,7 @@ def generate_data(numSamples):
 	
 	
 if __name__ == "__main__":
-	numSamples = 1000000
+	numSamples = 10000000
 	data = generate_data(numSamples = numSamples)
 	print("calculated %i sampels" % (numSamples))
 	
