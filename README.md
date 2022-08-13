@@ -33,9 +33,10 @@ Time with
 
 	$ nsys profile --stats=true --force-overwrite=true -o some_report python generate_samples.py
 	
+![image](https://github.com/feildawproton/learning_synthetic_sigprop/blob/main/pics/no_overlap.png)
+Figure 1: With no copy-compute 
 
+![image](https://github.com/feildawproton/learning_synthetic_sigprop/blob/main/pics/tried_overlap.png)
+Figure 2: With copy-compute overlap with non-default streams.
 
-no_overlap.png
-          
-tried_overlap.png
           
